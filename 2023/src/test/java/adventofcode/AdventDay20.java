@@ -72,8 +72,13 @@ public class AdventDay20 extends Commun {
             // L'observation a montré que le cycle est depuis 0, pas de décalage avant le cycle
 
             resetAll();
-            int nombreDeclencheurFin = (int) modules.values().stream().flatMap(m -> m.destinations.stream())
-                    .filter(d -> d.equals("dn")).count();
+
+            String declencheurDeRx = modules.values().stream()
+                    .filter(d -> d.destinations.contains("rx")).findFirst().get().nom;
+
+            int nombreDeclencheurFin = Math.toIntExact(modules.values().stream().flatMap(m -> m.destinations.stream())
+                    .filter(d -> d.equals(declencheurDeRx)).count());
+
             LinkedList<Pulse> queue = new LinkedList<>();
 
             while (cycles.size() < nombreDeclencheurFin) {
