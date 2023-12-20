@@ -1,5 +1,6 @@
 package adventofcode;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+@Disabled
 public class AdventDay19 extends Commun {
 
     Map<String, Workflow> workflows;

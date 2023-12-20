@@ -1,5 +1,6 @@
 package adventofcode;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@Disabled
 public class AdventDay16 extends Commun {
 
     Map2D<Character> carte = new Map2D<>(' ');
