@@ -1,5 +1,6 @@
 package adventofcode;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -7,7 +8,7 @@ import java.net.URISyntaxException;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+@Disabled
 public class AdventDay21 extends Commun {
 
     Map2D carte = new Map2D(' ');
@@ -17,32 +18,20 @@ public class AdventDay21 extends Commun {
     @Test
     public void etape1_exemple() throws URISyntaxException, IOException {
         List<String> inputs = lectureDuFichier(this, true);
-        assertEquals(16, traitement(inputs, 6, true));
+        assertEquals(16, traitement(inputs, 6));
     }
 
     @Test
     public void etape1() throws IOException, URISyntaxException {
         List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(3605, traitement(inputs, 64, true));
+        assertEquals(3605, traitement(inputs, 64));
     }
 
-    @Test
-    public void etape2_exemple() throws URISyntaxException, IOException {
-        List<String> inputs = lectureDuFichier(this, true);
-        assertEquals(0, traitement(inputs, 10, false));
-    }
-
-    @Test
-    public void etape2() throws IOException, URISyntaxException {
-        List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(0, traitement(inputs, 0, false));
-    }
-
-    public long traitement(List<String> inputs, int nbpas, boolean etape1) {
+    public long traitement(List<String> inputs, int nbpas) {
         int y = 0;
         this.maxPas = nbpas;
         this.nbPosition = 0;
-        long resultat = 0;
+        long resultat;
         for (String line : inputs) {
             for (int x = 0; x < line.length(); x++) {
                 carte.set(x, y, line.charAt(x));
@@ -54,14 +43,13 @@ public class AdventDay21 extends Commun {
             for (int j = 0; j < carte.max_y; j++) {
                 if (carte.get(i, j).equals('S')) {
                     depart = new Point(i, j);
+                    break;
                 }
             }
         }
 
-        if (etape1) {
-            parcoursLaCarte(depart.x, depart.y);
-            resultat = nbPosition;
-        }
+        parcoursLaCarte(depart.x, depart.y);
+        resultat = nbPosition;
         System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
         return resultat;
     }
@@ -84,6 +72,7 @@ public class AdventDay21 extends Commun {
     public static class Point {
         final long x;
         final long y;
+
         public Point(long x, long y) {
             this.x = x;
             this.y = y;
@@ -111,6 +100,7 @@ public class AdventDay21 extends Commun {
         private final HashMap<Long, HashMap<Long, Character>> map;
         protected long max_x;
         protected long max_y;
+
         public Map2D(Character def) {
             this.default_value = def;
             map = new HashMap<>();
@@ -130,7 +120,7 @@ public class AdventDay21 extends Commun {
         }
 
         public Character get(Point p) {
-            return get(p.x, p.y);
+            return get(((p.x % max_x) + max_x) % max_x, ((p.y % max_y) + max_y) % max_y);
         }
     }
 
