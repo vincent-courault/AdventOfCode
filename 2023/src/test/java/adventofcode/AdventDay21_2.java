@@ -18,18 +18,6 @@ public class AdventDay21_2 extends Commun {
     static int hauteur = 0;
     static char[][] carte;
 
-    private static boolean estValidePartie1(char[][] map, Point p) {
-        if (p.x < 0 || p.x >= largeur) return false;
-        if (p.y < 0 || p.y >= hauteur) return false;
-        return map[p.x][p.y] != '#';
-    }
-
-    private static boolean estValidePartie2(char[][] map, Point p) {
-        int x = ((p.x % largeur) + largeur) % largeur;
-        int y = ((p.y % hauteur) + hauteur) % hauteur;
-        return map[x][y] != '#';
-    }
-
     @Test
     public void etape1_exemple() throws URISyntaxException, IOException {
         List<String> inputs = lectureDuFichier(this, true);
@@ -45,13 +33,12 @@ public class AdventDay21_2 extends Commun {
     @Test
     public void etape2() throws IOException, URISyntaxException {
         List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(596734624269210L, traitement(inputs, false, 1000));
+        assertEquals(596734624269210L, traitement(inputs, false, 0));
     }
 
     public long traitement(List<String> lines, boolean etape1, int nbpas) {
         Point depart = null;
 
-        // Build map
         largeur = lines.get(0).length();
         hauteur = lines.size();
 
@@ -72,47 +59,49 @@ public class AdventDay21_2 extends Commun {
         if (etape1) {
             for (int i = 0; i < nbpas; i++) {
                 points = points.parallelStream()
-                        .flatMap(p -> Stream.of(p.add(Direction.N), p.add(Direction.S), p.add(Direction.E), p.add(Direction.O)))
-                        .filter(p -> estValidePartie1(carte, p)).collect(Collectors.toSet());
+                        .flatMap(p -> Stream.of(p.add(Direction.N), p.add(Direction.S),
+                                p.add(Direction.E), p.add(Direction.O)))
+                        .filter(Point::estValidePartie1).collect(Collectors.toSet());
             }
         }
         long resultat = points.size();
         if (!etape1) {
-
             long valeurMaxPas = 26501365;
-            long cycles = valeurMaxPas / (largeur * 2L);
-            long debutCycle = valeurMaxPas % largeur;
-
+            long cycles = valeurMaxPas / largeur;
+            int debutCycle = (int) (valeurMaxPas % largeur);
             points = new HashSet<>(Collections.singleton(depart));
-            //On va mesurer les valeurs pour 65 (début du cycle), 65 + 131 (0.5 cycle) et 65 + 262 (1 cycle)
+            //On va mesurer les valeurs pour 65 (début du cycle), 65 + 131 (1 cycle) et 65 + 262 (2 cycles)
             // pour ensuite effectuer une régression polynomiale
             final List<Integer> pointsRegression = new ArrayList<>();
-            int pas = 0;
+            int nombrePas = 0;
             for (int i = 0; i < 3; i++) {
-                while (pas < (long) i * largeur + debutCycle) {
-                    points = points.parallelStream().flatMap(p -> Stream.of(p.add(Direction.N), p.add(Direction.S), p.add(Direction.E), p.add(Direction.O))).filter(p -> estValidePartie2(carte, p)).collect(Collectors.toSet());
-                    pas++;
+                while (nombrePas < i * largeur + debutCycle) {
+                    points = points.parallelStream()
+                            .flatMap(p -> Stream.of(p.add(Direction.N), p.add(Direction.S),
+                                    p.add(Direction.E), p.add(Direction.O)))
+                            .filter(Point::estValidePartie2).collect(Collectors.toSet());
+                    nombrePas++;
                 }
                 pointsRegression.add(points.size());
             }
 
             final WeightedObservedPoints obs = new WeightedObservedPoints();
-            obs.add(0, pointsRegression.get(0));
-            obs.add(0.5, pointsRegression.get(1));
-            obs.add(1, pointsRegression.get(2));
-
+            for (int i = 0; i < pointsRegression.size(); i++) {
+                obs.add(i, pointsRegression.get(i));
+            }
             final PolynomialCurveFitter fitter = PolynomialCurveFitter.create(2);
             final double[] coeff = fitter.fit(obs.toList());
             int coeffX2 = Math.toIntExact(Math.round(coeff[2]));
-            int coeffX1 = Math.toIntExact(Math.round(coeff[1]));
-            int coeffX0 = Math.toIntExact(Math.round(coeff[0]));
-            resultat = cycles * cycles * coeffX2 + cycles * coeffX1 + coeffX0;
+            int coeffX = Math.toIntExact(Math.round(coeff[1]));
+            int constante = Math.toIntExact(Math.round(coeff[0]));
+            resultat = cycles * cycles * coeffX2 + cycles * coeffX + constante;
         }
         System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
         return resultat;
     }
 
     private static class Point {
+
         public int x, y;
 
         public Point(int x, int y) {
@@ -135,6 +124,18 @@ public class AdventDay21_2 extends Commun {
 
         public Point add(Point p) {
             return new Point(x + p.x, y + p.y);
+        }
+
+        private boolean estValidePartie1() {
+            if (x < 0 || x >= largeur) return false;
+            if (y < 0 || y >= hauteur) return false;
+            return carte[x][y] != '#';
+        }
+
+        private boolean estValidePartie2() {
+            int newx = ((x % largeur) + largeur) % largeur;
+            int newy = ((y % hauteur) + hauteur) % hauteur;
+            return carte[newx][newy] != '#';
         }
     }
 
