@@ -10,7 +10,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay15 extends Commun {
 
     @Test

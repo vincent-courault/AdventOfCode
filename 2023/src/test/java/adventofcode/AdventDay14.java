@@ -15,6 +15,70 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AdventDay14 extends Commun {
 
+    @Test
+    @Order(1)
+    public void etape1_exemple() throws URISyntaxException, IOException {
+        List<String> inputs = lectureDuFichier(this, true);
+        assertEquals(136, traitement(inputs, true));
+    }
+
+    @Test
+    @Order(2)
+    public void etape1() throws IOException, URISyntaxException {
+        List<String> inputs = lectureDuFichier(this, false);
+        assertEquals(105982, traitement(inputs, true));
+    }
+
+    @Test
+    @Order(3)
+    public void etape2_exemple() throws URISyntaxException, IOException {
+        List<String> inputs = lectureDuFichier(this, true);
+        assertEquals(64, traitement(inputs, false));
+    }
+
+    @Test
+    @Order(3)
+    public void etape2() throws IOException, URISyntaxException {
+        List<String> inputs = lectureDuFichier(this, false);
+        assertEquals(85175, traitement(inputs, false));
+    }
+
+    public long traitement(List<String> inputs, boolean etape1) {
+        long resultat;
+        String[][] carte = new String[inputs.get(0).length()][inputs.size()];
+        for (int i = 0; i < inputs.size(); i++) {
+            String line = inputs.get(i);
+            carte[i] = line.split("");
+        }
+        Map<String, Long> valeursCarte = new HashMap<>();
+        if (etape1) {
+            versNord(carte);
+            resultat = calculeValeurCarte(carte);
+        } else {
+            Long debutCycle = 0L;
+            long longueurCycle = 0L;
+            for (long numeroTourActuel = 1L; numeroTourActuel < 10000; numeroTourActuel++) {
+                faitUnTour(carte);
+                //On calcule une clé pour la carte qui correspond aux positions des "O"
+                String valeurDeLaCarte = calculeValeurCarte(carte) + "|" + calculeValeurCarteParColonne(carte);
+
+                //Si la clé est déjà présente on récupère le début du cycle et on calcule la taille du cycle
+                if (valeursCarte.containsKey(valeurDeLaCarte)) {
+                    debutCycle = valeursCarte.get(valeurDeLaCarte);
+                    longueurCycle = numeroTourActuel - debutCycle;
+                    break;
+                }
+                valeursCarte.put(valeurDeLaCarte, numeroTourActuel);
+            }
+            long max = 1000000000L;
+            Long positionCarteALaFinDesTours = debutCycle + (max - debutCycle) % (longueurCycle);
+            String valeurCarteALaFin = valeursCarte.entrySet().stream().filter(entry -> positionCarteALaFinDesTours.equals(entry.getValue())).map(Map.Entry::getKey).findFirst().orElse("");
+            resultat = Long.parseLong(valeurCarteALaFin.split("\\|")[0]);
+        }
+        System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
+        return resultat;
+    }
+
     private static void faitUnTour(String[][] carte) {
         versNord(carte);
         versOuest(carte);
@@ -124,70 +188,6 @@ public class AdventDay14 extends Commun {
                 }
             }
         }
-        return resultat;
-    }
-
-    @Test
-    @Order(1)
-    public void etape1_exemple() throws URISyntaxException, IOException {
-        List<String> inputs = lectureDuFichier(this, true);
-        assertEquals(136, traitement(inputs, true));
-    }
-
-    @Test
-    @Order(2)
-    public void etape1() throws IOException, URISyntaxException {
-        List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(105982, traitement(inputs, true));
-    }
-
-    @Test
-    @Order(3)
-    public void etape2_exemple() throws URISyntaxException, IOException {
-        List<String> inputs = lectureDuFichier(this, true);
-        assertEquals(64, traitement(inputs, false));
-    }
-
-    @Test
-    @Order(3)
-    public void etape2() throws IOException, URISyntaxException {
-        List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(85175, traitement(inputs, false));
-    }
-
-    public long traitement(List<String> inputs, boolean etape1) {
-        long resultat;
-        String[][] carte = new String[inputs.get(0).length()][inputs.size()];
-        for (int i = 0; i < inputs.size(); i++) {
-            String line = inputs.get(i);
-            carte[i] = line.split("");
-        }
-        Map<String, Long> valeursCarte = new HashMap<>();
-        if (etape1) {
-            versNord(carte);
-            resultat = calculeValeurCarte(carte);
-        } else {
-            Long debutCycle = 0L;
-            long longueurCycle = 0L;
-            for (long numeroTourActuel = 1L; numeroTourActuel < 10000; numeroTourActuel++) {
-                faitUnTour(carte);
-                //On calcule une clé pour la carte qui correspond aux positions des "O"
-                String valeurDeLaCarte = calculeValeurCarte(carte) + "|" + calculeValeurCarteParColonne(carte);
-
-                //Si la clé est déjà présente on récupère le début du cycle et on calcule la taille du cycle
-                if (valeursCarte.containsKey(valeurDeLaCarte)) {
-                    debutCycle = valeursCarte.get(valeurDeLaCarte);
-                    longueurCycle = numeroTourActuel - debutCycle;
-                    break;
-                }
-                valeursCarte.put(valeurDeLaCarte, numeroTourActuel);
-            }
-            long max = 1000000000L;
-            Long positionCarteALaFinDesTours = debutCycle + (max - debutCycle) % (longueurCycle);
-            String valeurCarteALaFin = valeursCarte.entrySet().stream().filter(entry -> positionCarteALaFinDesTours.equals(entry.getValue())).map(Map.Entry::getKey).findFirst().orElse("");
-            resultat = Long.parseLong(valeurCarteALaFin.split("\\|")[0]);
-        }
-        System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
         return resultat;
     }
 }

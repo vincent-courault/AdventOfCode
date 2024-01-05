@@ -11,7 +11,6 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay13 extends Commun {
     @Test
     public void etape1_exemple() throws URISyntaxException, IOException {

@@ -67,7 +67,6 @@ public class AdventDay06 extends Commun {
                     nbRecordBattu++;
                 }
             }
-            System.out.println(nbRecordBattu);
             resultat = resultat * nbRecordBattu;
         }
 

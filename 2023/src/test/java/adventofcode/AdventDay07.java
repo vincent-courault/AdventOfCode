@@ -11,7 +11,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay07 extends Commun {
 
     @Test
@@ -38,7 +37,6 @@ public class AdventDay07 extends Commun {
         assertEquals(254115617, traitement(inputs, false));
     }
 
-
     public Long traitement(List<String> inputs, boolean etape1) {
         long resultat = 0L;
 
@@ -55,8 +53,7 @@ public class AdventDay07 extends Commun {
         return resultat;
     }
 
-
-   static class Hand implements Comparable {
+   static class Hand implements Comparable<Hand> {
         int mise;
         int forceDeLaMain;
         int[] frequence = new int[13];
@@ -97,8 +94,7 @@ public class AdventDay07 extends Commun {
         }
 
         @Override
-        public int compareTo(Object o) {
-            Hand other = (Hand) o;
+        public int compareTo(Hand other) {
             if (forceDeLaMain != other.forceDeLaMain) {
                 return forceDeLaMain - other.forceDeLaMain;
             } else {

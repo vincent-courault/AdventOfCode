@@ -8,7 +8,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay22 extends Commun {
 
     int[][][] carte;

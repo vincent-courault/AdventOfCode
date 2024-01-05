@@ -73,7 +73,7 @@ public class AdventDay05_2 extends Commun {
             //on parcourt les intervalles d'entrée
             for (int indiceBorne = 0; indiceBorne < seeds.length; indiceBorne += 2) {
                 //on récupére pour chaque intervalle le minimum non transformé
-                // l'intervalle initial est découpé en fonction des étapes de trasnformation
+                // l'intervalle initial est découpé en fonction des étapes de transformation
                 for (long valeur = seeds[indiceBorne]; valeur < seeds[indiceBorne] + seeds[indiceBorne + 1]; valeur++) {
                     long[] retourTransformations =
                             retourneLaValeurMinimumNonTransformeeEtLIntervalleDeMiseAJour(valeur, transformationsMaps);

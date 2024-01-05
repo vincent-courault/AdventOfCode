@@ -8,7 +8,6 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay10 extends Commun {
     @Test
     public void etape1_exemple() throws URISyntaxException, IOException {
@@ -155,5 +154,3 @@ public class AdventDay10 extends Commun {
         return valeurActuelle.matches("\\d*");
     }
 }
-
-

@@ -64,7 +64,7 @@ public class AdventDay04 extends Commun {
     public int traitement2(List<String> scratchCards) {
         int resultat;
 
-        Integer[] nombreCartes = new Integer[203];
+        Integer[] nombreCartes = new Integer[scratchCards.size()];
         Arrays.fill(nombreCartes, 0);
         int numCarte = 0;
 

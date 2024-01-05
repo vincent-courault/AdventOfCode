@@ -37,7 +37,6 @@ public class AdventDay12 extends Commun {
         assertEquals(4964259839627L, traitement(inputs, false));
     }
 
-
     public long traitement(List<String> inputs, boolean etape1) {
         long resultat = 0;
         List<String> records = new ArrayList<>();

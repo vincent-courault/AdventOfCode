@@ -10,7 +10,6 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
 public class AdventDay11 extends Commun {
 
     @Test
@@ -97,21 +96,13 @@ public class AdventDay11 extends Commun {
         return resultat;
     }
 
-    private static class Coordonnees2D {
+    private static final class Coordonnees2D {
         public int x;
         public int y;
 
         public Coordonnees2D(int x, int y) {
             this.x = x;
             this.y = y;
-        }
-
-        @Override
-        public String toString() {
-            return "Coordonnees2D{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    '}';
         }
     }
 }
