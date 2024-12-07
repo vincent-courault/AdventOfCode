@@ -62,6 +62,18 @@ public class Grid<T> {
         return new Grid<T>(g);
     }
 
+    public int compte(T valeur) {
+        int resultat = 0;
+        for (int ligne = 0; ligne < getHeight(); ligne++) {
+            for (int colonne = 0; colonne < getWidth(); colonne++) {
+                if (get(ligne, colonne).equals(valeur)) {
+                    resultat++;
+                }
+            }
+        }
+        return resultat;
+    }
+
     public Grid<T> transpose() {
         List<List<T>> g = new ArrayList<>();
         for (int c = 0; c < getWidth(); c++) {

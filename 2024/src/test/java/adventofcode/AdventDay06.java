@@ -10,7 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AdventDay06 extends Commun {
 
-
     @Test
     public void etape1_exemple() throws URISyntaxException, IOException {
         List<String> inputs = lectureDuFichier(this, true);
@@ -36,7 +35,7 @@ public class AdventDay06 extends Commun {
     }
 
     public int traitement(List<String> inputs) {
-        int resultat = 0;
+        int resultat;
         Grid<Character> grille = new Grid<>(inputs, new Divider.Character());
         Grid<Character> grilleVisitee = new Grid<>(inputs, new Divider.Character());
         int gardeLigne = 0;
@@ -78,31 +77,15 @@ public class AdventDay06 extends Commun {
                 grilleVisitee.set(gardeLigne, gardeColonne, '+');
             }
             switch (sens) {
-                case 'N':
-                    gardeLigne--;
-                    break;
-                case 'S':
-                    gardeLigne++;
-                    break;
-                case 'E':
-                    gardeColonne++;
-                    break;
-                case 'O':
-                    gardeColonne--;
-                    break;
+                case 'N' -> gardeLigne--;
+                case 'S' -> gardeLigne++;
+                case 'E' -> gardeColonne++;
+                case 'O' -> gardeColonne--;
             }
         }
+        resultat = grilleVisitee.compte('+');
 
-        for (int ligne = 0; ligne < grilleVisitee.getHeight(); ligne++) {
-            for (int colonne = 0; colonne < grilleVisitee.getWidth(); colonne++) {
-                if (grilleVisitee.get(ligne, colonne) == '+') {
-                    resultat++;
-                }
-            }
-        }
-        //System.out.println(grilleVisitee);
         System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
-
         return resultat;
     }
 
@@ -128,11 +111,12 @@ public class AdventDay06 extends Commun {
 
         for (int ligne = 0; ligne < grille.getHeight(); ligne++) {
             for (int colonne = 0; colonne < grille.getWidth(); colonne++) {
-               if (grille.get(ligne, colonne) == '.') {
+                // on positionne un obstacle sur un emplacement vide
+                if (grille.get(ligne, colonne) == '.') {
                     grille.set(ligne, colonne, '#');
                     int nb = 0;
 
-                    while (grille.isValid(gardeLigne, gardeColonne) && nb < 10000) {
+                    while (grille.isValid(gardeLigne, gardeColonne) && nb < 7000) {
                         nb++;
                         if (grille.get(gardeLigne, gardeColonne) == '#') {
                             sens = switch (sens) {
@@ -156,27 +140,21 @@ public class AdventDay06 extends Commun {
                             };
                         }
                         switch (sens) {
-                            case 'N':
-                                gardeLigne--;
-                                break;
-                            case 'S':
-                                gardeLigne++;
-                                break;
-                            case 'E':
-                                gardeColonne++;
-                                break;
-                            case 'O':
-                                gardeColonne--;
-                                break;
+                            case 'N' -> gardeLigne--;
+                            case 'S' -> gardeLigne++;
+                            case 'E' -> gardeColonne++;
+                            case 'O' -> gardeColonne--;
                         }
                     }
 
                     if (grille.isValid(gardeLigne, gardeColonne)) {
                         resultat++;
                     }
+                    // On se remet dans la situation initiale
                     gardeLigne = gardeLigneInit;
                     gardeColonne = gardeColonneInit;
                     sens = 'N';
+                    // on repositionne la valeur initiale sur la position testée
                     grille.set(ligne, colonne, '.');
                 }
             }
