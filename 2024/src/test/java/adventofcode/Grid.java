@@ -37,6 +37,7 @@ public class Grid<T> {
     public boolean isValid(int row, int col) {
         return 0 <= row && row < getHeight() && 0 <= col && col < getWidth();
     }
+    public boolean isValid(Coord c) { return isValid(c.ligne(), c.colonne()); }
 
     public Grid<T> rotateCW() {
         List<List<T>> g = new ArrayList<>();
