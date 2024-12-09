@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -53,7 +52,7 @@ public class AdventDay05 extends Commun {
             }
         }
 
-        int sommeDejaTrie = 0, sommeApresTri = 0, resultat = 0;
+        int sommeDejaTrie = 0, sommeApresTri = 0, resultat;
         for (String s : pagesToProduce) {
             int[] pages = Arrays.stream(s.split(",")).mapToInt(Integer::parseInt).toArray();
             boolean ordered = true;

@@ -54,7 +54,7 @@ public class AdventDay03 extends Commun {
     public int traitement2(List<String> inputs) {
         int resultat = 0;
         boolean compte = true;
-        Pattern pattern = Pattern.compile("mul\\((\\d+),(\\d+)\\)|do\\(\\)|don\\'t\\(\\)");
+        Pattern pattern = Pattern.compile("mul\\((\\d+),(\\d+)\\)|do\\(\\)|don't\\(\\)");
         for (String input : inputs) {
             Matcher matcher = pattern.matcher(input);
             while (matcher.find()) {
