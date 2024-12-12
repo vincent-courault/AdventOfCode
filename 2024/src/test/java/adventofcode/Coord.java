@@ -2,7 +2,7 @@ package adventofcode;
 
 import java.util.Objects;
 
-public class Coord {// extends Tuple.Pair<Integer, Integer> {
+public class Coord {
 
     int ligne;
     int colonne;
@@ -42,5 +42,10 @@ public class Coord {// extends Tuple.Pair<Integer, Integer> {
     @Override
     public int hashCode() {
         return Objects.hash(ligne, colonne);
+    }
+
+    @Override
+    public String toString() {
+        return "Coord{ligne=" + ligne +", colonne=" + colonne +'}';
     }
 }
