@@ -3,19 +3,31 @@ package adventofcode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Grid<T> {
     public List<List<T>> grid;
 
     public Grid(List<String> in, Divider<T> d) {
         grid = new ArrayList<>();
-        for (String s : in) {
-            grid.add(d.toList(s));
-        }
+        in.forEach(s -> grid.add(d.toList(s)));
     }
 
-    public Grid(List<List<T>> g) {
-        grid = g;
+    public Grid(List<List<T>> in) {
+        grid = new ArrayList<>();
+        in.forEach(s -> grid.add(new ArrayList<>(s)));
+    }
+
+    public Grid(int height, int width, T valeurInit) {
+        grid = IntStream.range(0, height).
+                mapToObj(_ -> IntStream.range(0, width).
+                        mapToObj(_ -> valeurInit).collect(Collectors.toList())).
+                collect(Collectors.toList());
+    }
+
+    public Grid(Grid<T> grilleVide) {
+        this(grilleVide.grid);
     }
 
     public int getHeight() {
@@ -37,30 +49,9 @@ public class Grid<T> {
     public boolean isValid(int row, int col) {
         return 0 <= row && row < getHeight() && 0 <= col && col < getWidth();
     }
-    public boolean isValid(Coord c) { return isValid(c.ligne(), c.colonne()); }
 
-    public Grid<T> rotateCW() {
-        List<List<T>> g = new ArrayList<>();
-        for (int c = 0; c < getWidth(); c++) {
-            List<T> col = new ArrayList<>();
-            for (int r = getHeight() - 1; r >= 0; r--) {
-                col.add(get(r, c));
-            }
-            g.add(col);
-        }
-        return new Grid<T>(g);
-    }
-
-    public Grid<T> rotateCCW() {
-        List<List<T>> g = new ArrayList<>();
-        for (int c = getWidth() - 1; c >= 0; c--) {
-            List<T> col = new ArrayList<>();
-            for (int r = 0; r < getHeight(); r++) {
-                col.add(get(r, c));
-            }
-            g.add(col);
-        }
-        return new Grid<T>(g);
+    public boolean isValid(Coord c) {
+        return isValid(c.ligne(), c.colonne());
     }
 
     public int compte(T valeur) {
@@ -75,24 +66,10 @@ public class Grid<T> {
         return resultat;
     }
 
-    public Grid<T> transpose() {
-        List<List<T>> g = new ArrayList<>();
-        for (int c = 0; c < getWidth(); c++) {
-            List<T> toRow = new ArrayList<>();
-            for (int r = 0; r < getHeight(); r++) {
-                toRow.add(get(r, c));
-            }
-            g.add(toRow);
-        }
-        return new Grid<T>(g);
-    }
-
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        for (List<T> row : grid) {
-            s.append(row.toString().replaceAll("[\\[\\],]", "")).append("\n");
-        }
-        return s.toString();
+        return grid.stream()
+                .map(row -> row.toString().replaceAll("[\\[\\], ]", "") + "\n")
+                .collect(Collectors.joining());
     }
 
     @Override
@@ -113,5 +90,9 @@ public class Grid<T> {
             return false;
         }
         return Arrays.equals(((Grid<T>) other).grid.toArray(), this.grid.toArray());
+    }
+
+    public T get(Coord c) {
+        return get(c.ligne(), c.colonne());
     }
 }
