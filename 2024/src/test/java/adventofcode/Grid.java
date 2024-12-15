@@ -72,6 +72,17 @@ public class Grid<T> {
                 .collect(Collectors.joining());
     }
 
+    public Coord getStartingPoint(T value) {
+        for (int i = 0; i < getHeight(); i++) {
+            for (int j = 0; j < getWidth(); j++) {
+                if (this.get(i, j).equals(value)) {
+                    return new Coord(i, j);
+                }
+            }
+        }
+        return new Coord(0,0);
+    }
+
     @Override
     public int hashCode() {
         return grid.hashCode();

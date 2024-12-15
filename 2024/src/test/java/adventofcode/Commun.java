@@ -31,17 +31,16 @@ public class Commun {
         return Files.readAllLines(Paths.get(path));
     }
 
-    List<String> lectureDuFichier2(Commun classe, boolean exemple) throws URISyntaxException, IOException {
-        String jour = classe.getClass().getSimpleName().substring(9);
+    List<String> lectureDuFichier(Commun classe, boolean exemple, int numero) throws URISyntaxException, IOException {
+        String jour = classe.getClass().getSimpleName().substring(9,11);
         String nomFichier;
         if (exemple) {
-            nomFichier = "input_day" + jour + "_exemple2.txt";
+            nomFichier = "input_day" + jour + "_exemple"+numero+".txt";
         } else {
             nomFichier = "input_day" + jour + ".txt";
         }
         URI path = Objects.requireNonNull(this.getClass().getClassLoader().getResource(nomFichier)).toURI();
         return Files.readAllLines(Paths.get(path));
     }
-
 
 }

@@ -12,6 +12,10 @@ public class Coord {
         this.colonne = colonne;
     }
 
+    public static Coord add(Coord a, Coord b) {
+        return new Coord(a.ligne + b.ligne, a.colonne + b.colonne);
+    }
+
     public int ligne() {
         return this.ligne;
     }
@@ -26,6 +30,10 @@ public class Coord {
 
     public Coord deplace(Direction d) {
         return deplace(d, 1);
+    }
+
+    public Coord add(Coord o) {
+        return add(this, o);
     }
 
     public Direction calculeEcart(Coord other) {
@@ -46,6 +54,6 @@ public class Coord {
 
     @Override
     public String toString() {
-        return "Coord{ligne=" + ligne +", colonne=" + colonne +'}';
+        return "Coord{ligne=" + ligne + ", colonne=" + colonne + '}';
     }
 }
