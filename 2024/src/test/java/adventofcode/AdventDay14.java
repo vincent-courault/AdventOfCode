@@ -9,8 +9,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -37,7 +35,6 @@ public class AdventDay14 extends Commun {
 
     //La solution correspond à ne pas avoir 2 robots au même endroit
     // on utilise une grille et on compte jusqu'à avoir le nombre de cases occupées égal au nombre de robot
-    @Test
     public void etape22() throws IOException, URISyntaxException {
         List<String> inputs = lectureDuFichier(this, false);
         assertEquals(7492, traitement2(inputs, 103, 101));
@@ -48,6 +45,16 @@ public class AdventDay14 extends Commun {
     public void etape23() throws IOException, URISyntaxException {
         List<String> inputs = lectureDuFichier(this, false);
         assertEquals(7492, traitement3(inputs, 103, 101));
+    }
+
+    // La présence d'une image signifie que des robots sont regroupés dans une même zone
+    // cela correspond à un score de sécurité (calculé dans l'étape 1) minimal
+    // les robots sont regroupés dans un cadran donc les 3 autres ont des valeurs faibles
+    // on itère donc sur le nombre de déplacement jusqu'à obtenir la valeur minimale
+    @Test
+    public void etape24() throws IOException, URISyntaxException {
+        List<String> inputs = lectureDuFichier(this, false);
+        assertEquals(7492, traitement4(inputs, 103, 101));
     }
 
     public int traitement(List<String> inputs, int nbLigneGrille, int nbColonneGrille, boolean etape1) throws IOException {
@@ -111,10 +118,50 @@ public class AdventDay14 extends Commun {
         return resultat;
     }
 
+    public int traitement4(List<String> inputs, int nbLigneGrille, int nbColonneGrille) {
+        int resultat = 0;
+        List<Robot> robots = inputs.stream().map(Robot::new).toList();
+        int mini = Integer.MAX_VALUE;
+        int score;
+        for (int i = 1; i < 10000; i++) {
+            for (Robot robot : robots) {
+                robot.deplace(1);
+                robot.deplaceDansLaGrille(nbLigneGrille, nbColonneGrille);
+            }
+            int cadran1 = 0, cadran2 = 0, cadran3 = 0, cadran4 = 0;
+            for (Robot robot : robots) {
+                if (robot.ligne() < nbLigneGrille / 2) {
+                    if (robot.colonne() < nbColonneGrille / 2) {
+                        cadran1++;
+                    }
+                    if (robot.colonne() > nbColonneGrille / 2) {
+                        cadran2++;
+                    }
+                }
+                if (robot.ligne() > nbLigneGrille / 2) {
+                    if (robot.colonne() < nbColonneGrille / 2) {
+                        cadran3++;
+                    }
+                    if (robot.colonne() > nbColonneGrille / 2) {
+                        cadran4++;
+                    }
+                }
+            }
+            score = cadran1 * cadran2 * cadran3 * cadran4;
+            if (score < mini) {
+                mini = score;
+                resultat = i;
+            }
+        }
+        System.out.println(mini);
+        System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
+        return resultat;
+    }
+
     public int traitement2(List<String> inputs, int nbLigneGrille, int nbColonneGrille) {
         int resultat = 0;
         List<Robot> robots = inputs.stream().map(Robot::new).toList();
-        Grid<Character> grilleVide = new Grid<>(nbLigneGrille,nbColonneGrille,'.');
+        Grid<Character> grilleVide = new Grid<>(nbLigneGrille, nbColonneGrille, '.');
 
         for (int i = 1; i < 10000; i++) {
             for (Robot robot : robots) {
