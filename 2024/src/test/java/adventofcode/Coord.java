@@ -2,7 +2,7 @@ package adventofcode;
 
 import java.util.Objects;
 
-public class Coord implements Comparable<Coord>{
+public class Coord implements Comparable<Coord> {
 
     int ligne;
     int colonne;
@@ -40,6 +40,10 @@ public class Coord implements Comparable<Coord>{
         return new Direction(other.ligne() - ligne(), other.colonne() - colonne());
     }
 
+    public int distance(Coord other) {
+        return Math.abs(other.ligne() - ligne()) + Math.abs(other.colonne() - colonne());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -56,6 +60,7 @@ public class Coord implements Comparable<Coord>{
     public String toString() {
         return "Coord{ligne=" + ligne + ", colonne=" + colonne + '}';
     }
+
     @Override
     public int compareTo(Coord o) {
         return o.toString().compareTo(this.toString());
