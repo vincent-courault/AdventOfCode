@@ -4,8 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -41,17 +39,17 @@ public class AdventDay01 extends Commun {
         int position = 50;
 
         for (String input : inputs) {
-            if(position==0){
+            if (position == 0) {
                 resultat++;
             }
-            int increment= Integer.parseInt(input.substring(1));
-            if(input.charAt(0) == 'L'){
-                position=(position-increment)%100;
-                if(position<0){
-                    position=position+100;
+            int increment = Integer.parseInt(input.substring(1));
+            if (input.charAt(0) == 'L') {
+                position = (position - increment) % 100;
+                if (position < 0) {
+                    position = position + 100;
                 }
-            }else{
-                position=(position+increment)%100;
+            } else {
+                position = (position + increment) % 100;
             }
         }
         System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
@@ -63,24 +61,23 @@ public class AdventDay01 extends Commun {
         int position = 50;
 
         for (String input : inputs) {
-            int increment= Integer.parseInt(input.substring(1));
-            if(input.charAt(0) == 'L'){
+            int increment = Integer.parseInt(input.substring(1));
+            if (input.charAt(0) == 'L') {
                 for (int i = 0; i < increment; i++) {
                     position--;
-                    if(position==0){
-                        resultat ++;
+                    if (position == 0) {
+                        resultat++;
                     }
-                    if(position<0) {
+                    if (position < 0) {
                         position = position + 100;
                     }
                 }
-
-            }else{
+            } else {
                 for (int i = 0; i < increment; i++) {
                     position++;
-                    if(position==100){
-                        resultat ++;
-                        position=0;
+                    if (position == 100) {
+                        resultat++;
+                        position = 0;
                     }
                 }
             }
