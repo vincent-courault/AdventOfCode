@@ -106,4 +106,43 @@ public class Grid<T> {
     public T get(Coord c) {
         return get(c.ligne(), c.colonne());
     }
+
+    public int getNbVoisins( int ligne, int colonne,T valeur) {
+
+        int nbVoisins=0;
+        if (isValid(ligne - 1, colonne - 1)
+                && get(ligne - 1, colonne - 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne, colonne - 1)
+                && get(ligne, colonne - 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne + 1, colonne - 1)
+                && get(ligne + 1, colonne - 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne - 1, colonne + 1)
+                && get(ligne - 1, colonne + 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne, colonne + 1)
+                && get(ligne, colonne + 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne + 1, colonne + 1) &&
+                get(ligne + 1, colonne + 1).equals(valeur)) {
+            nbVoisins++;
+        }
+        if (isValid(ligne - 1, colonne) &&
+                get(ligne - 1, colonne).equals(valeur)) {
+            nbVoisins++;
+        }
+
+        if (isValid(ligne + 1, colonne) &&
+                get(ligne + 1, colonne).equals(valeur)) {
+            nbVoisins++;
+        }
+        return nbVoisins;
+    }
 }
