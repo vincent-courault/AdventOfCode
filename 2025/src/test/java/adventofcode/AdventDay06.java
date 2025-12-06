@@ -28,13 +28,13 @@ public class AdventDay06 extends Commun {
     @Test
     public void etape2_exemple() throws URISyntaxException, IOException {
         List<String> inputs = lectureDuFichier(this, true);
-        assertEquals(3263827, traitement2(inputs, true));
+        assertEquals(3263827, traitement2(inputs));
     }
 
     @Test
     public void etape2() throws IOException, URISyntaxException {
         List<String> inputs = lectureDuFichier(this, false);
-        assertEquals(9640641878593L, traitement2(inputs, false));
+        assertEquals(9640641878593L, traitement2(inputs));
     }
 
     public long traitement(List<String> inputs) {
@@ -69,7 +69,7 @@ public class AdventDay06 extends Commun {
         return resultat;
     }
 
-    public long traitement2(List<String> inputs,boolean exemple) {
+    public long traitement2(List<String> inputs) {
         long resultat = 0;
         List<String> nombres = new ArrayList<>();
         int indiceSigne;
@@ -81,30 +81,24 @@ public class AdventDay06 extends Commun {
         List<String> signes = List.of(inputs.getLast().replaceAll(" ", "").split(""));
         indiceSigne = signes.size() - 1;
 
-        String v1;
-        String v2;
-        String v3;
-        String v4=" ";
         long valeur;
         valeur = determineValeurAPartirDuSigne(signes.get(indiceSigne));
-
         for (int i = indiceChiffre; i >= 0; i--) {
-            v1 = String.valueOf(nombres.get(0).charAt(i));
-            v2 = String.valueOf(nombres.get(1).charAt(i));
-            v3 = String.valueOf(nombres.get(2).charAt(i));
-            if(!exemple)
-                v4 =  String.valueOf(nombres.get(3).charAt(i));
+            StringBuilder valeurColonne= new StringBuilder();
+            for (String nombre : nombres) {
+                valeurColonne.append(String.valueOf(nombre.charAt(i)).trim());
+            }
             String signe = signes.get(indiceSigne);
-            if (v1.equals(" ") && v2.equals(" ") && v3.equals(" ") && v4.equals(" ")) {
+            if (valeurColonne.isEmpty()) {
                 indiceSigne--;
                 resultat += valeur;
                 valeur = determineValeurAPartirDuSigne(signes.get(indiceSigne));
             } else {
-                int valeurColonne = Integer.parseInt((v1 + v2 + v3 + v4).trim());
+                int valeurNumColonne = Integer.parseInt(valeurColonne.toString());
                 if (signe.equals("+")) {
-                    valeur += valeurColonne;
+                    valeur += valeurNumColonne;
                 } else {
-                    valeur *= valeurColonne;
+                    valeur *= valeurNumColonne;
                 }
             }
         }
