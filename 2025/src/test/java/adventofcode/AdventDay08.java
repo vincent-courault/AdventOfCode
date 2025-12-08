@@ -34,14 +34,14 @@ public class AdventDay08 extends Commun {
         assertEquals(772452514, traitement2(inputs));
     }
 
-    public int traitement(List<String> inputs, int k2) {
+    public int traitement(List<String> inputs, int nombreDePaires) {
         int resultat = 1;
         List<Coord3D> points = new ArrayList<>();
         for (String input : inputs) {
             String[] split = input.split(",");
             points.add(new Coord3D(split[0], split[1], split[2]));
         }
-        List<PaireDePoints> paireDePoints = trouveLesXPairesDePointsLesPlusProches(points, k2);
+        List<PaireDePoints> paireDePoints = trouveLesXPairesDePointsLesPlusProches(points, nombreDePaires);
 
         // Création des réseaux
         UnionFind unionFind = new UnionFind(points.size());
@@ -166,7 +166,7 @@ public class AdventDay08 extends Commun {
 
     private List<PaireDePoints> trouveLesXPairesDePointsLesPlusProches(List<Coord3D> points, int x) {
         PriorityQueue<PaireDePoints> pile = new PriorityQueue<>(
-                (a, b) -> Double.compare(b.distance, a.distance) // max-heap
+                (a, b) -> Double.compare(b.distance, a.distance)
         );
         int n = points.size();
         for (int i = 0; i < n; i++) {
