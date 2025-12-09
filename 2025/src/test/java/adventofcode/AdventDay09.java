@@ -63,6 +63,7 @@ public class AdventDay09 extends Commun {
                             mapToObj(i -> Rectangle.depuisCoords(tiles.get(i), tiles.get((i + 1) % tiles.size())))
                             .toList();
             //Pour chaque rectangle, on vérifie s'il y a une intersection avec une arête
+            Rectangle rectanglemax = null;
             for (Rectangle rectangle : rectangles) {
                 boolean estOk = true;
                 for (Rectangle greenTile : greenTiles) {
@@ -73,9 +74,13 @@ public class AdventDay09 extends Commun {
                 }
                 if (estOk) {
                     long area = rectangle.calculeSurface();
+                    if(area>resultat){
+                        rectanglemax=rectangle;
+                    }
                     resultat = Math.max(area,resultat);
                 }
             }
+            IO.println(rectanglemax);
         }
         System.out.println(this.getClass().getSimpleName() + " " + name + " : " + resultat);
         return resultat;
