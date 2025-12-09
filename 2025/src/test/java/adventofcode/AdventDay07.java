@@ -54,14 +54,14 @@ public class AdventDay07 extends Commun {
             }
         }
         int maxLigne = inputs.size();
-        while (rayons.keySet().iterator().next().ligne < maxLigne) {
+        while (rayons.keySet().iterator().next().x < maxLigne) {
             Map<Coord, Long> oldRayons = new HashMap<>(rayons);
             rayons = new HashMap<>();
             for (Coord rayon : oldRayons.keySet()) {
-                Coord prochainePosition = new Coord(rayon.ligne + 1, rayon.colonne);
+                Coord prochainePosition = new Coord(rayon.x + 1, rayon.y);
                 if (splitters.contains(prochainePosition)) {
-                    rayons.merge(new Coord(rayon.ligne + 1, rayon.colonne + 1), oldRayons.get(rayon), Long::sum);
-                    rayons.merge(new Coord(rayon.ligne + 1, rayon.colonne - 1), oldRayons.get(rayon), Long::sum);
+                    rayons.merge(new Coord(rayon.x + 1, rayon.y + 1), oldRayons.get(rayon), Long::sum);
+                    rayons.merge(new Coord(rayon.x + 1, rayon.y - 1), oldRayons.get(rayon), Long::sum);
                     nbSplitterActivés ++;
                 } else {
                     rayons.merge(prochainePosition, oldRayons.get(rayon), Long::sum);

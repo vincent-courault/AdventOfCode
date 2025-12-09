@@ -4,24 +4,29 @@ import java.util.Objects;
 
 public class Coord implements Comparable<Coord> {
 
-    int ligne;
-    int colonne;
+    int x;
+    int y;
 
-    public Coord(int ligne, int colonne) {
-        this.ligne = ligne;
-        this.colonne = colonne;
+    public Coord(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Coord(String x, String y) {
+        this.x = Integer.parseInt(x);
+        this.y = Integer.parseInt(y);
     }
 
     public static Coord add(Coord a, Coord b) {
-        return new Coord(a.ligne + b.ligne, a.colonne + b.colonne);
+        return new Coord(a.x + b.x, a.y + b.y);
     }
 
     public int ligne() {
-        return this.ligne;
+        return this.x;
     }
 
     public int colonne() {
-        return this.colonne;
+        return this.y;
     }
 
     public Coord deplace(Direction d, int nbPas) {
@@ -48,17 +53,17 @@ public class Coord implements Comparable<Coord> {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Coord coord = (Coord) o;
-        return ligne == coord.ligne && colonne == coord.colonne;
+        return x == coord.x && y == coord.y;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ligne, colonne);
+        return Objects.hash(x, y);
     }
 
     @Override
     public String toString() {
-        return "Coord{ligne=" + ligne + ", colonne=" + colonne + '}';
+        return "Coord{ligne=" + x + ", colonne=" + y + '}';
     }
 
     @Override
